@@ -149,6 +149,6 @@ em.font-display {
 
 /* anime.js splitText clip wrappers: leave room for descenders and italic overhang */
 [style*='overflow: clip'] {
-  padding: 0 0.08em 0.16em;
-  margin: 0 -0.08em -0.16em;
+  padding: 0 0.08em 0.3em;
+  margin: 0 -0.08em -0.3em;
 }
