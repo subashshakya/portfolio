@@ -1,0 +1,154 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-display: 'Fraunces', ui-serif, Georgia, serif;
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-rule: var(--rule);
+  --color-rust: var(--rust);
+  --color-ochre: var(--ochre);
+  --color-olive: var(--olive);
+  --color-oxblood: var(--oxblood);
+  --color-dusk: var(--dusk);
+}
+
+/* Autumn, by daylight: unbleached paper, espresso ink, rust and ochre. */
+:root {
+  --paper: #f2e9da;
+  --paper-2: #e8dcc8;
+  --ink: #2a1f17;
+  --ink-2: #5c4a3b;
+  --ink-3: #8a7663;
+  --rule: rgba(42, 31, 23, 0.16);
+  --rust: #a4532f;
+  --ochre: #b98a3e;
+  --olive: #6e6a3a;
+  --oxblood: #6f2c26;
+  --dusk: #4d5d63;
+
+  /* Motion tokens — mirrored in src/motion.ts */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-quick: 320ms;
+  --dur-base: 640ms;
+  --dur-slow: 1100ms;
+
+  color-scheme: light;
+}
+
+/* Autumn, at dusk: walnut and lamplight. */
+.dark {
+  --paper: #1d1712;
+  --paper-2: #261e17;
+  --ink: #eee3d0;
+  --ink-2: #c2b29c;
+  --ink-3: #8d7c68;
+  --rule: rgba(238, 227, 208, 0.14);
+  --rust: #d07a4f;
+  --ochre: #d6a85c;
+  --olive: #a5a066;
+  --oxblood: #c0675c;
+  --dusk: #8fa3a9;
+  color-scheme: dark;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background-color var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
+}
+
+::selection {
+  background: var(--rust);
+  color: var(--paper);
+}
+
+.font-display {
+  font-optical-sizing: auto;
+  font-variation-settings: 'SOFT' 50, 'WONK' 0;
+}
+.font-display.italic,
+.font-display .italic,
+em.font-display {
+  font-variation-settings: 'SOFT' 100, 'WONK' 1;
+}
+
+/* Paper fibre texture */
+.paper-grain {
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .15 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.page-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+}
+.dark .page-grain {
+  opacity: 0.12;
+  mix-blend-mode: screen;
+}
+
+/* Underline that grows from the left on hover */
+.ink-link {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--dur-base) var(--ease), color var(--dur-quick) var(--ease);
+}
+.ink-link:hover,
+.group:hover .ink-link {
+  background-size: 100% 1px;
+}
+
+/* Dotted leader for the table of contents */
+.leader {
+  flex: 1;
+  min-width: 1.5rem;
+  height: 1px;
+  align-self: center;
+  background-image: radial-gradient(circle, var(--ink-3) 0.75px, transparent 1px);
+  background-size: 6px 2px;
+  background-repeat: repeat-x;
+  opacity: 0.6;
+  transition: opacity var(--dur-base) var(--ease);
+}
+
+.plate-lines {
+  transition: transform var(--dur-slow) var(--ease);
+}
+.group:hover .plate-lines {
+  transform: scale(1.045) rotate(-0.6deg);
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* anime.js splitText clip wrappers: leave room for descenders and italic overhang */
+[style*='overflow: clip'] {
+  padding: 0 0.08em 0.16em;
+  margin: 0 -0.08em -0.16em;
+}
